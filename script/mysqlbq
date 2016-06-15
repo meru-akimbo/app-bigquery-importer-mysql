@@ -57,7 +57,7 @@ mysqlbq - cli tool for App::BigQuery::Importer::MySQL
         --db_host         MySQL Hostname or IP addr(ex: localhost)
         --src             MySQL Schema and Table name(ex: schema_name.table_name)
         --dst             BigQuery Dataset and Table name(ex: dataset_name.table_name)
-        --allow_text_type Also import as STRING TEXT type columns
+        --allow_text_type Import MySQL TEXT type columns to BigQuery as STRING type
         --dryrun          dry run mode. not run the side-effects operation.(ex: gsutil mk/rm, bq load/rm)
         -h(--help)  show this help
       Requirement Programs: mysql cli and gcloud package
