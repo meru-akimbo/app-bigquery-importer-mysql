@@ -6,10 +6,8 @@ use t::Util;
 use DBI;
 use App::BigQuery::Importer::MySQL;
 
-my $dbh;
-eval {
-    $dbh = DBI->connect( $ENV{TEST_MYSQL} );
-} or plan skip_all => 'mysql-server is required to this test';
+my $mysqld = t::Util->start_mysqld;
+my $dbh = DBI->connect($mysqld->dsn);
 
 my @create_sqls = (
     q{

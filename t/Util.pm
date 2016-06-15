@@ -3,19 +3,18 @@ use strict;
 use warnings;
 use utf8;
 
+use Test::More 0.98;
 use Test::mysqld;
 
-BEGIN {
-    my $mysqld = Test::mysqld->new(
-        my_cnf => {
-            'skip-networking' => '', # no TCP socket
-        }
-    ) or die $Test::mysqld::errstr;
-
-    $TEST_GUARDS::MYSQLD = $mysqld;
-    $ENV{TEST_MYSQL}     = $mysqld->dsn;
-
-    END { undef $TEST_GUARDS::MYDSLD }
+sub start_mysqld {
+    eval {
+        require Test::mysqld;
+        Test::mysqld->new(
+             my_cnf => {
+                 'skip-networking' => '', # no TCP socket
+             }
+         ) or die $Test::mysqld::errstr;
+    } or plan(skip_all => 'mysql-server is required to this test');
 }
 
 1;
