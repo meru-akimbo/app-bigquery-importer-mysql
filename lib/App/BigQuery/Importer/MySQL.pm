@@ -136,11 +136,13 @@ sub _check_columns {
         die "$args->{src_schema}.$args->{src_table} has BLOB table";
     }
 
+    return if $args->{allow_text_type};
+
     my $text_check_sql = "SELECT SUM(IF((DATA_TYPE LIKE '%text%'),1, 0)) AS cnt
         FROM INFORMATION_SCHEMA.columns
         WHERE TABLE_SCHEMA = '$args->{src_schema}' AND TABLE_NAME = '$args->{src_table}'";
     $cnt = $args->{dbh}->selectrow_hashref($text_check_sql);
-    if ($cnt->{cnt} > 0 && !$args->{allow_text_type}) {
+    if ($cnt->{cnt} > 0) {
         die "$args->{src_schema}.$args->{src_table} has TEXT table";
     }
 }
