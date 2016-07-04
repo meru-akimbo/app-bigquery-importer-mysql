@@ -46,7 +46,7 @@ sub run {
 
     # create BigQuery schema json structure
     my $schema_type_check_sql = "SELECT
-        CONCAT('{\"name\": \"', COLUMN_NAME, '\",\"type\":\"', IF(DATA_TYPE LIKE \"%int%\", \"INTEGER\",IF(DATA_TYPE = \"decimal\",\"FLOAT\",\"STRING\")) , '\"}') AS json
+        CONCAT('{\"name\": \"', COLUMN_NAME, '\",\"type\":\"', IF(DATA_TYPE LIKE \"%int%\", \"INTEGER\", IF(DATA_TYPE LIKE \"%datetime%\", \"TIMESTAMP\", IF(DATA_TYPE LIKE \"%timestamp%\", \"TIMESTAMP\", IF(DATA_TYPE = \"decimal\",\"FLOAT\",\"STRING\")))) , '\"}') AS json
         FROM INFORMATION_SCHEMA.columns where TABLE_SCHEMA = '${src_schema}' AND TABLE_NAME = '${src_table}'";
     my $rows = $dbh->selectall_arrayref($schema_type_check_sql);
     my @schemas;
